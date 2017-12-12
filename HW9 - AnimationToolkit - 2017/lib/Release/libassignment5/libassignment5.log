@@ -1,5 +1,7 @@
 ﻿  aBehaviors.cpp
-aBehaviors.cpp(383): warning C4018: '<': signed/unsigned mismatch
+aBehaviors.cpp(392): warning C4018: '<': signed/unsigned mismatch
+aBehaviors.cpp(446): warning C4018: '<': signed/unsigned mismatch
+aBehaviors.cpp(498): warning C4018: '<': signed/unsigned mismatch
   libassignment5.vcxproj -> C:\Users\Andrea Lin\Documents\GitHub\hw9-behavioral-animation-andreahlin\HW9 - AnimationToolkit - 2017\libsrc\animation\..\..\lib\libassignment5.lib
   aActor.h
   aBehaviorController.h

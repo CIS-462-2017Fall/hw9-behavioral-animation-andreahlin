@@ -1,5 +1,6 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (A5-BehaviorViewer-soln.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Generating code
+c:\users\andrea lin\documents\github\hw9-behavioral-animation-andreahlin\hw9 - animationtoolkit - 2017\libsrc\animation\abehaviors.cpp(503): warning C4700: uninitialized local variable 'numNeighs' used
 d:\vcprojects\cis462-562 animation toolkit - master (local)\2016\vs2015\hw9 - animationtoolkit - solution\libsrc\animation\aikcontroller-soln.cpp(710): warning C4715: 'IKController::computeCCDIK': not all control paths return a value
   Finished generating code
 libAssignment1-soln.lib(aVector.obj) : warning LNK4099: PDB 'libassignment1-soln.pdb' was not found with 'libAssignment1-soln.lib(aVector.obj)' or at 'C:\Users\Andrea Lin\Documents\GitHub\hw9-behavioral-animation-andreahlin\HW9 - AnimationToolkit - 2017\assignment5\Release\libassignment1-soln.pdb'; linking object as if no debug info
