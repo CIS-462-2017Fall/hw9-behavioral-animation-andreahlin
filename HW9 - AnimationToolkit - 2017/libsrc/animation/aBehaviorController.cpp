@@ -157,24 +157,34 @@ void BehaviorController::control(double deltaT)
 
 		//  force and torque inputs are computed from vd and thetad as follows:
 		//              Velocity P controller : force = mass * Kv * (vd - v)
-		//              Heading PD controller : torque = Inertia * (-Kv * thetaDot -Kp * (thetad - theta))
+		//              Heading PD controller : torque = Inertia * (-Kv * thetaDot + Kp * (thetad - theta))
 		//  where the values of the gains Kv and Kp are different for each controller
 
 		// TODO: insert your code here to compute m_force and m_torque
+		//double theta = atan(m_Vdesired[2] / m_Vdesired[0]) - m_Euler[1];
+		//ClampAngle(theta);
+		//m_thetad = theta;
+		m_vd = m_Vdesired.Length();
+		m_thetad = m_Euler[1] + acos(Dot(m_Vel0, m_Vdesired) / (m_Vel0.Length() * m_Vdesired.Length()));
+		double theta = m_thetad - m_Euler[1];
+		ClampAngle(theta);
 
+		double r = (m_pBehaviorTarget->getLocalTranslation() - getPosition()).Length();
+		gInertia = gMass * r * r; 
+		m_vd = m_Vdesired.Length(); 
 
+		m_force = gMass * gVelKv * (m_Vdesired - m_Vel0);
+		m_torque = gInertia * (-1.0 * gOriKv * m_AVelB + gOriKp * (theta));
 
+		// a)  in the steady state V_z^b = V_d and theta_y = theta_d
+		// b) the settling time for the V transient response is 0.4 sec, and 
+		// c) the settling time for the theta transient response is 0.25 sec, and there is no overshoot or oscillation
 
-
-
-
-
-
-
-
-
-
+		// Choose the appropriate gains for the velocity(V) feedback controller(i.e.Kv) and heading angle(theta) 
+		// controller(i.e.Kp and Kv) that achieve the desired dynamic response described above.
+		// Make sure the values for the forces and torques generated are in the valid value range.
 		// when agent desired agent velocity and actual velocity < 2.0 then stop moving
+
 		if (m_vd < 2.0 &&  m_state[VEL][_Z] < 2.0)
 		{
 			m_force[2] = 0.0;
@@ -211,27 +221,35 @@ void BehaviorController::computeDynamics(vector<vec3>& state, vector<vec3>& cont
 
 	// Compute the stateDot vector given the values of the current state vector and control input vector
 	// TODO: add your code here
+	stateDot[0] = m_pActor->getSkeleton()->getRootNode()->getLocal2Global() * state[2];
+	stateDot[1] = state[3];
+	stateDot[2] = force / gMass;
+	stateDot[3] = torque / gMass;
 
-
-
-
-
+	(stateDot[0])[1] = 0.0; 
+	m_Vel0 = stateDot[0];
 }
 
 void BehaviorController::updateState(float deltaT, int integratorType)
 {
-	//  Update the state vector given the m_stateDot vector using Euler (integratorType = 0) or RK2 (integratorType = 1) integratio
+	//  Update the state vector given the m_stateDot vector using Euler (integratorType = 0) or RK2 (integratorType = 1) integration
 	//  this should be similar to what you implemented in the particle system assignment
 
 	// TODO: add your code here
-	
-
-
-
-
-
-
-
+	if (integratorType == 0) // Euler case
+	{
+		m_state[0] = m_state[0] + deltaT * m_stateDot[0];
+		m_state[1] = m_state[1] + deltaT * m_stateDot[1];
+		m_state[2] = m_state[2] + deltaT * m_stateDot[2];
+		m_state[3] = m_state[3] + deltaT * m_stateDot[3];
+	}
+	else if (integratorType == 1) // Runge Kutta case
+	{
+		m_state[0] = m_state[0] + deltaT * m_stateDot[0];
+		m_state[1] = m_state[1] + deltaT * m_stateDot[1];
+		m_state[2] = m_state[2] + deltaT * m_stateDot[2];
+		m_state[3] = m_state[3] + deltaT * m_stateDot[3];
+	}
 	//  given the new values in m_state, these are the new component state values 
 	m_Pos0 = m_state[POS];
 	m_Euler = m_state[ORI];
@@ -240,14 +258,25 @@ void BehaviorController::updateState(float deltaT, int integratorType)
 
 	//  Perform validation check to make sure all values are within MAX values
 	// TODO: add your code here
+	if (m_VelB.Length() > gMaxSpeed)
+	{
+		m_VelB = m_VelB.Normalize() * gMaxSpeed;
+	}
+	
+	if (m_AVelB.Length() > gMaxAngularSpeed) 
+	{ 
+		m_AVelB = m_AVelB.Normalize() * gMaxAngularSpeed; 
+	}
 
+	if (m_force.Length() > gMaxForce)
+	{
+		m_force = m_force.Normalize() * gMaxForce;
+	}
 
-
-
-
-
-
-
+	if (m_torque.Length() > gMaxTorque)
+	{
+		m_torque = m_torque.Normalize() * gMaxTorque;
+	}
 	// update the guide orientation
 	// compute direction from nonzero velocity vector
 	vec3 dir;

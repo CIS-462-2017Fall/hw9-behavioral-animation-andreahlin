@@ -46,7 +46,17 @@ protected:
     static void TW_CALL onGetNumCharactersCb(void *value, void *clientData);
 	static void TW_CALL onGetNumObstaclesCb(void *value, void *clientData);
 	static void TW_CALL onResetCb(void *clientData);
-
+	// TODO: added AnTweakBar callback functions 
+	static void TW_CALL onSetKArrival(const void *value, void *clientData);
+	static void TW_CALL onGetKArrival(void *value, void *clientData);
+	static void TW_CALL onSetKDeparture(const void *value, void *clientData);
+	static void TW_CALL onGetKDeparture(void *value, void *clientData);
+	static void TW_CALL onSetKWander(const void *value, void *clientData);
+	static void TW_CALL onGetKWander(void *value, void *clientData);
+	static void TW_CALL onSetKAvoid(const void *value, void *clientData);
+	static void TW_CALL onGetKAvoid(void *value, void *clientData);
+	static void TW_CALL onSetTAvoid(const void *value, void *clientData);
+	static void TW_CALL onGetTAvoid(void *value, void *clientData);
 
 	virtual void setActiveBehavior(BehaviorType type);
     virtual void showObstacles(bool b) { m_ShowObstacles = b; }

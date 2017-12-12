@@ -84,6 +84,12 @@ void BehaviorViewer::initializeGui()
 	TwAddButton(m_TwBehaviorBar, "Reset", onResetCb, this, "");
 
 	//TODO: Add your code here to create additional GUI Variables
+	TwAddVarRW(m_TwBehaviorBar, "KArrival", TW_TYPE_DOUBLE, &BehaviorController::KArrival, ""); 
+	TwAddVarRW(m_TwBehaviorBar, "KDeparture", TW_TYPE_DOUBLE, &BehaviorController::KDeparture, "");
+	TwAddVarRW(m_TwBehaviorBar, "KNoise", TW_TYPE_DOUBLE, &BehaviorController::KNoise, "");
+	TwAddVarRW(m_TwBehaviorBar, "KWander", TW_TYPE_DOUBLE, &BehaviorController::KWander, "");
+	TwAddVarRW(m_TwBehaviorBar, "KAvoid", TW_TYPE_DOUBLE, &BehaviorController::KAvoid, "");
+	TwAddVarRW(m_TwBehaviorBar, "TAvoid", TW_TYPE_DOUBLE, &BehaviorController::TAvoid, "");
 }
 
 
@@ -473,3 +479,68 @@ void TW_CALL BehaviorViewer::onResetCb(void *clientData)
 }
 
 //TODO: Add your code here to create the corresponding callback functions for each new GUI Variable added
+
+void TW_CALL BehaviorViewer::onSetKArrival(const void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	int v = *(const int *)value;  // for instance
+	viewer->reset(viewer->m_numCharacters, v);
+}
+
+void TW_CALL BehaviorViewer::onGetKArrival(void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	*static_cast<BehaviorType *>(value) = viewer->m_BehaviorType;
+}
+
+void TW_CALL BehaviorViewer::onSetKDeparture(const void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	int v = *(const int *)value;  // for instance
+	viewer->reset(viewer->m_numCharacters, v);
+}
+
+void TW_CALL BehaviorViewer::onGetKDeparture(void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	*static_cast<BehaviorType *>(value) = viewer->m_BehaviorType;
+}
+
+void TW_CALL BehaviorViewer::onSetKWander(const void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	int v = *(const int *)value;  // for instance
+	viewer->reset(viewer->m_numCharacters, v);
+}
+
+void TW_CALL BehaviorViewer::onGetKWander(void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	*static_cast<BehaviorType *>(value) = viewer->m_BehaviorType;
+}
+
+void TW_CALL BehaviorViewer::onSetKAvoid(const void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	int v = *(const int *)value;  // for instance
+	viewer->reset(viewer->m_numCharacters, v);
+}
+
+void TW_CALL BehaviorViewer::onGetKAvoid(void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	*static_cast<BehaviorType *>(value) = viewer->m_BehaviorType;
+}
+
+void TW_CALL BehaviorViewer::onSetTAvoid(const void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	int v = *(const int *)value;  // for instance
+	viewer->reset(viewer->m_numCharacters, v);
+}
+
+void TW_CALL BehaviorViewer::onGetTAvoid(void *value, void *clientData)
+{
+	BehaviorViewer* viewer = ((BehaviorViewer*)clientData);
+	*static_cast<BehaviorType *>(value) = viewer->m_BehaviorType;
+}
